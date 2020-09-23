@@ -9,9 +9,11 @@
 import UIKit
 import UserNotifications
 
+
 class ViewController: UIViewController,UNUserNotificationCenterDelegate {
     
   
+    
     
     
     override func viewDidLoad() {
@@ -34,6 +36,7 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
           
                 if success{
                     print("Successfully Registered")
+                  
                     
                 }else{
                     print("Error in registration")
@@ -53,11 +56,6 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
         content.subtitle = "Notification subTitle"
         content.body = "This is body of the notification.This is body of the notification.This is body of the notification.This is body of the notification"
         content.sound = .default
-        
-        
-        
-        
-        
         content.categoryIdentifier = "alarm"
         content.userInfo = ["name":"manna"]
         
@@ -86,14 +84,16 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         
-        let action = UNNotificationAction(identifier: "action", title: "Learn More", options: .foreground)
+        let actionLearneMore = UNNotificationAction(identifier: "action", title: "Learn More", options: .foreground)
+        let dismiss = UNNotificationAction(identifier: "Dismiss", title: "Dismiss", options: .destructive)
         
-        let category = UNNotificationCategory(identifier: "alarm", actions: [action], intentIdentifiers: [], options: [])
+        let category = UNNotificationCategory(identifier: "alarm", actions: [actionLearneMore,dismiss], intentIdentifiers: [], options: [])
         center.setNotificationCategories([category])
         
         
         
     }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         let userInfo = response.notification.request.content.userInfo
@@ -113,8 +113,9 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
             case "action":
                 print("Hello World")
                 
-                
                 break
+            case "dismiss":
+                print("Dissmiss")
             default:
                 break
             }
@@ -128,6 +129,7 @@ class ViewController: UIViewController,UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
         completionHandler([.alert,.badge,.sound])
+        
     }
     
 }
